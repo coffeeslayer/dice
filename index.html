@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>Dice Job Search</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f3f5f9;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; min-width: 320px; }
+
+    header {
+      padding: 32px max(24px, calc((100% - 1040px) / 2));
+      color: #fff;
+      background: #111827;
+    }
+
+    header p { margin: 8px 0 0; color: #cbd5e1; }
+    h1 { margin: 0; font-size: 1.65rem; }
+    main { max-width: 1040px; margin: 28px auto; padding: 0 24px 40px; }
+    section { margin-bottom: 22px; padding: 24px; border: 1px solid #e1e6ef; border-radius: 12px; background: #fff; }
+    h2 { margin: 0 0 18px; font-size: 1.15rem; }
+    .filters { display: grid; grid-template-columns: minmax(220px, 2fr) 1fr 1fr; gap: 16px; }
+    label { display: grid; gap: 7px; color: #344054; font-size: .9rem; font-weight: 600; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cbd2df;
+      border-radius: 7px;
+      color: #172033;
+      background: #fff;
+      font: inherit;
+    }
+    input:focus, select:focus, textarea:focus { outline: 3px solid #bfdbfe; border-color: #2563eb; }
+    .check { display: flex; align-items: center; gap: 9px; margin-top: 16px; }
+    .check input { width: auto; }
+    button, .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 9px 15px;
+      border: 0;
+      border-radius: 7px;
+      color: #fff;
+      background: #1d4ed8;
+      font: inherit;
+      font-weight: 650;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    button:hover, .button:hover { background: #1e40af; }
+    button.secondary { color: #344054; background: #eef2f7; }
+    button.secondary:hover { background: #e2e8f0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+    .notice { margin: 14px 0 0; color: #475467; font-size: .9rem; line-height: 1.5; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .form-grid .wide { grid-column: 1 / -1; }
+    textarea { min-height: 82px; resize: vertical; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 12px 10px; border-bottom: 1px solid #e8ebf1; vertical-align: top; }
+    th { color: #475467; font-size: .82rem; }
+    td { font-size: .9rem; }
+    td a { color: #1d4ed8; }
+    .empty { color: #667085; text-align: center; }
+    .row-actions { white-space: nowrap; }
+    .row-actions button { min-height: 32px; padding: 5px 9px; font-size: .82rem; }
+    @media (max-width: 700px) {
+      header { padding: 26px 20px; }
+      main { margin-top: 18px; padding: 0 14px 28px; }
+      section { padding: 18px; }
+      .filters, .form-grid { grid-template-columns: 1fr; }
+      .form-grid .wide { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dice Job Search</h1>
+    <p>Find matching roles on Dice and keep your application notes in one place.</p>
+  </header>
+  <main>
+    <section aria-labelledby="search-title">
+      <h2 id="search-title">Search filters</h2>
+      <form id="search-form">
+        <div class="filters">
+          <label for="query">Keywords
+            <input id="query" name="query" value=".net developer with react" required>
+          </label>
+          <label for="posted">Posted
+            <select id="posted" name="posted">
+              <option value="ONE">Past 24 hours</option>
+              <option value="THREE" selected>Past 3 days</option>
+              <option value="SEVEN">Past 7 days</option>
+              <option value="THIRTY">Past 30 days</option>
+            </select>
+          </label>
+          <label for="workplace">Workplace
+            <select id="workplace" name="workplace">
+              <option value="Remote" selected>Remote</option>
+              <option value="Hybrid">Hybrid</option>
+              <option value="On-site">On-site</option>
+            </select>
+          </label>
+        </div>
+        <label class="check" for="easy-apply">
+          <input id="easy-apply" name="easyApply" type="checkbox" checked>
+          Easy Apply only
+        </label>
+        <div class="actions">
+          <button type="submit">Open filtered Dice search</button>
+        </div>
+        <p class="notice">The Playwright runner uses a dedicated Chrome profile because current Chrome blocks automation of the regular profile. Configure DICE_EMAIL and DICE_PASSWORD in the local, Git-ignored .env file for automatic sign-in, or sign in manually in that window. The session is kept for future runs. See README.md.</p>
+      </form>
+    </section>
+
+    <section aria-labelledby="apply-title">
+      <h2 id="apply-title">Playwright Easy Apply runner</h2>
+      <p class="notice">The companion runner opens a dedicated Chrome profile. Sign in to Dice in that window once; it keeps the session for future runs. After each application it returns to the filtered search and reloads the results. It records successful applications locally and skips jobs already marked Applied or previously processed.</p>
+      <p class="notice">See README.md for setup and run instructions. The runner prints startup progress. Use preview mode to inspect matches; <code>python apply_jobs.py --apply</code> submits eligible results automatically without an additional confirmation prompt.</p>
+    </section>
+
+    <section aria-labelledby="tracker-title">
+      <h2 id="tracker-title">Track a job</h2>
+      <form id="job-form" class="form-grid">
+        <label for="job-title">Job title
+          <input id="job-title" name="title" required>
+        </label>
+        <label for="company">Company
+          <input id="company" name="company" required>
+        </label>
+        <label for="job-url" class="wide">Dice listing URL
+          <input id="job-url" name="url" type="url" placeholder="https://www.dice.com/job-detail/..." required>
+        </label>
+        <label for="status">Status
+          <select id="status" name="status">
+            <option>Saved</option>
+            <option>Applied</option>
+            <option>Not pursuing</option>
+          </select>
+        </label>
+        <label for="notes">Notes
+          <textarea id="notes" name="notes" placeholder="Contact, follow-up date, or other notes"></textarea>
+        </label>
+        <div class="wide"><button type="submit">Save job</button></div>
+      </form>
+      <p class="notice">Your tracker is stored only in this browser on this device.</p>
+    </section>
+
+    <section aria-labelledby="saved-title">
+      <h2 id="saved-title">Your jobs</h2>
+      <p id="storage-error" class="notice" role="alert" hidden></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Job</th><th>Company</th><th>Status</th><th>Notes</th><th>Actions</th></tr>
+          </thead>
+          <tbody id="jobs">
+            <tr><td class="empty" colspan="5">No jobs saved yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    const storageKey = "dice-job-search.jobs.v1";
+    const jobForm = document.querySelector("#job-form");
+    const jobsBody = document.querySelector("#jobs");
+    const storageError = document.querySelector("#storage-error");
+
+    function showStorageError(message) {
+      storageError.textContent = message;
+      storageError.hidden = false;
+    }
+
+    function readJobs() {
+      try {
+        const stored = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        if (!Array.isArray(stored)) throw new Error("Stored job list is not an array.");
+        return stored;
+      } catch (error) {
+        console.error("Could not read the saved job list.", error);
+        showStorageError("Could not read saved jobs from this browser. Check browser storage permissions before continuing.");
+        return [];
+      }
+    }
+
+    function writeJobs(jobs) {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(jobs));
+        storageError.hidden = true;
+        return true;
+      } catch (error) {
+        console.error("Could not save the job list.", error);
+        showStorageError("Could not save jobs in this browser. Check that local storage is available.");
+        return false;
+      }
+    }
+
+    function renderJobs() {
+      const jobs = readJobs();
+      jobsBody.replaceChildren();
+      if (jobs.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 5;
+        cell.className = "empty";
+        cell.textContent = "No jobs saved yet.";
+        row.append(cell);
+        jobsBody.append(row);
+        return;
+      }
+
+      jobs.forEach((job, index) => {
+        const row = document.createElement("tr");
+        const listing = document.createElement("a");
+        listing.href = job.url;
+        listing.target = "_blank";
+        listing.rel = "noopener noreferrer";
+        listing.textContent = job.title;
+
+        [listing, job.company, job.status, job.notes || "—"].forEach((value) => {
+          const cell = document.createElement("td");
+          if (value instanceof Node) cell.append(value);
+          else cell.textContent = value;
+          row.append(cell);
+        });
+
+        const actions = document.createElement("td");
+        actions.className = "row-actions";
+        const statusButton = document.createElement("button");
+        statusButton.type = "button";
+        statusButton.className = "secondary";
+        statusButton.textContent = "Update status";
+        statusButton.addEventListener("click", () => {
+          const statuses = ["Saved", "Applied", "Not pursuing"];
+          const next = statuses[(statuses.indexOf(job.status) + 1) % statuses.length];
+          const updated = readJobs();
+          updated[index].status = next;
+          if (writeJobs(updated)) renderJobs();
+        });
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "secondary";
+        deleteButton.textContent = "Remove";
+        deleteButton.addEventListener("click", () => {
+          const updated = readJobs();
+          updated.splice(index, 1);
+          if (writeJobs(updated)) renderJobs();
+        });
+        actions.append(statusButton, document.createTextNode(" "), deleteButton);
+        row.append(actions);
+        jobsBody.append(row);
+      });
+    }
+
+    document.querySelector("#search-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(event.currentTarget);
+      const params = new URLSearchParams();
+      params.set("filters.easyApply", data.has("easyApply") ? "true" : "false");
+      params.set("filters.postedDate", data.get("posted"));
+      params.set("filters.workplaceTypes", data.get("workplace"));
+      params.set("q", data.get("query").trim());
+      window.open(`https://www.dice.com/jobs?${params.toString()}`, "_blank", "noopener,noreferrer");
+    });
+
+    jobForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(jobForm);
+      let url;
+      try {
+        url = new URL(data.get("url"));
+      } catch {
+        alert("Enter a valid Dice listing URL.");
+        return;
+      }
+      const hostname = url.hostname.toLowerCase();
+      if (url.protocol !== "https:" || (hostname !== "dice.com" && !hostname.endsWith(".dice.com"))) {
+        alert("For safety, enter a link on dice.com.");
+        return;
+      }
+      const jobs = readJobs();
+      jobs.unshift({
+        title: data.get("title").trim(),
+        company: data.get("company").trim(),
+        url: url.href,
+        status: data.get("status"),
+        notes: data.get("notes").trim()
+      });
+      if (writeJobs(jobs)) {
+        jobForm.reset();
+        renderJobs();
+      }
+    });
+
+    renderJobs();
+  </script>
+</body>
+</html>
