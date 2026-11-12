@@ -15,11 +15,7 @@ from playwright.sync_api import sync_playwright
 
 
 SEARCH_URL = (
-    "https://www.linkedin.com/jobs/search-results/"
-    "?currentJobId=4440401536&keywords=.net%20react%20remote"
-    "&origin=JOB_SEARCH_PAGE_JOB_FILTER"
-    "&referralSearchId=mMZsIFYI9OPt11Ouag93KA%3D%3D"
-    "&geoId=90000608&f_TPR=r604800&f_AL=true"
+    "https://www.linkedin.com/jobs/search-results/?currentJobId=4489288400&keywords=senior%20software%20engineer%20cloud%2C%20remote&origin=PREFERENCES_LANDING&referralSearchId=lfADMfcl%2F86A9Rd4DbZuog%3D%3D&geoId=100939624&f_TPR=r604800"
 )
 CHROME_PROFILE_DIR = (
     Path(os.environ["LOCALAPPDATA"]) / "LinkedInJobSearch" / "ChromeProfile"

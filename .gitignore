@@ -1,3 +1,4 @@
 .env
 .dice-application-state.json
+.linkedin-application-state.json
 __pycache__/
